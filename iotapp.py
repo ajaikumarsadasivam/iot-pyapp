@@ -17,6 +17,7 @@ pico_data_topic = 'pico/sensors/data'
 pico_control_topic = 'pico/led/control'
 sensor_data = {'temperature': None, 'potentiometer': None, 'distance': None}
 
+
 def on_connect(client, userdata, flags, rc, properties):
     '''
     '''
@@ -26,6 +27,8 @@ def on_connect(client, userdata, flags, rc, properties):
         mqtt_client.subscribe(pico_data_topic)
     else:
         print(f"Failed to connect with result code: {rc}")
+
+
 def on_message(client, userdata, msg):
     '''
     '''
@@ -36,6 +39,7 @@ def on_message(client, userdata, msg):
         print(f"Received data: {sensor_data}")
     except json.JSONDecodeError as e:
         print(f"Failed to decode JSON: {e}")
+
 
 mqtt_client.on_connect = on_connect
 mqtt_client.on_message = on_message
@@ -48,13 +52,18 @@ try:
     mqtt_client.loop_start()
 except Exception as e:
     print(f"Failed to connect to MQTT broker: {e}")
-    
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
 @app.route('/sensor-data')
 def sensor_data_api():
     return jsonify(sensor_data)
+
+
 @app.route('/control', methods=['POST'])
 def control_led():
     led_color = request.form['color']
@@ -65,5 +74,7 @@ def control_led():
     }
     mqtt_client.publish(pico_control_topic, json.dumps(command))
     return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
