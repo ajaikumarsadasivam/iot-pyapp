@@ -36,6 +36,6 @@ class TestMQTT:
         mock_subscribe.return_value = None
         
         from app import on_connect
-        on_connect(mqtt_client, None, None, 0)  # Simulate successful connection
+        on_connect(mqtt_client, None, None, 0, None)  # Simulate successful connection
         
         mock_subscribe.assert_called_once_with('pico/sensors/data')
