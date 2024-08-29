@@ -11,10 +11,10 @@ if os.getenv('FLASK_ENV') == 'testing':
     app.config.from_object('config.TestConfig')
 
 
-mqtt_broker = os.getenv('MQTT_BROKER', '7a5ac4b86d0a408292b06e2abd774619.s1.eu.hivemq.cloud')
-mqtt_port = int(os.getenv('MQTT_PORT', 8883))
-mqtt_username = os.getenv('MQTT_USERNAME', 'iot-test')
-mqtt_password = os.getenv('MQTT_PASSWORD', 'Welcome1@')
+mqtt_broker = os.getenv('MQTT_BROKER')
+mqtt_port = int(os.getenv('MQTT_PORT'))
+mqtt_username = os.getenv('MQTT_USERNAME')
+mqtt_password = os.getenv('MQTT_PASSWORD')
 client_id = 'mqtt-test'
 
 mqtt_client = paho.Client(client_id=client_id, userdata=None, protocol=paho.MQTTv5)
