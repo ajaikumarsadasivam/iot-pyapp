@@ -1,8 +1,9 @@
 import pytest
 from unittest.mock import patch
-from app import app, mqtt_client
 import os
 os.getcwd() 
+from app import app, mqtt_client
+
 
 class TestMQTT:
     @pytest.fixture
