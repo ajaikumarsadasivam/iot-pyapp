@@ -1,0 +1,61 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Create release package (Zip)
+      run: |
+        zip -r iot-pyapp.zip ./*
+
+    - name: Create release package (Tarball)
+      run: |
+        tar -czvf iot-pyapp.tar.gz ./*
+
+    - name: Upload release asset
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-package
+        path: iot-pyapp.zip # or iot-pyapp.tar.gz
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Publish GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        body: |
+          Release version ${{ github.ref }}.
+
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: iot-pyapp.zip # or iot-pyapp.tar.gz
+        asset_name: iot-pyapp.zip # or iot-pyapp.tar.gz
+        asset_content_type: application/zip # or application/gzip
