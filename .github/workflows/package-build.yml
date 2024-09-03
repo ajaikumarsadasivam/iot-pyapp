@@ -1,7 +1,8 @@
-name: Build and Release
+name: Build and Release Package
 
 on:
   push:
+    branches: ['release']  
     tags:
       - 'v*.*.*'
 
@@ -21,11 +22,11 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Create release package (Zip)
       run: |
-        zip -r iot-pyapp.zip ./*
+        zip -r iot-pyapp.zip ./* -x "*/.*"
 
     - name: Create release package (Tarball)
       run: |
-        tar -czvf iot-pyapp.tar.gz ./*
+        tar --exclude='.[^/]*' -czvf iot-pyapp.tar.gz ./*
 
     - name: Upload release asset
       uses: actions/upload-artifact@v3
