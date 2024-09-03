@@ -1,6 +1,4 @@
-# Release Notes - Version 1.0.0
-
-**Release Date:** 2024-09-01
+**Release Date:** 2024-09-03
 
 ## Overview
 This release includes the initial implementation of the Flask web application. The python application is designed to work together, allowing the Raspberry Pi Pico W to receive sensor data and send commands to control LEDs.
@@ -23,4 +21,4 @@ This release includes the initial implementation of the Flask web application. T
 - **User**: Developed the MQTT Pico W script and Flask app.
 
 ### Feedback and Support
-If you encounter any issues or have feedback
+If you encounter any issues or have feedback, please contact [ajaikumar.sadasivam@gmail.com](mailto:ajaikumar.sadasivam@gmail.com)

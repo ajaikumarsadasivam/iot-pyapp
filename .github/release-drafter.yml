@@ -1,4 +1,4 @@
-name-template: 'v$NEXT_PATCH_VERSION'
+name-template: 'Release v$NEXT_PATCH_VERSION 🌟'
 tag-template: 'v$NEXT_PATCH_VERSION'
 categories:
   - title: '🚀 New Features'
@@ -9,8 +9,16 @@ categories:
     label: 'maintenance'
 change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 template: |
-  ## What's Changed
 
+ ## Overview
+  <!-- This will include content from the RELEASE_NOTES.md file -->
+  {% if exists('RELEASE_NOTES.md') %}
+  {% include 'RELEASE_NOTES.md' %}
+  {% else %}
+  No additional release notes provided.
+  {% endif %}
+
+ ## What's Changed
   $CHANGES
 
   **Full Changelog**: https://github.com/$REPOSITORY/compare/$PREVIOUS_TAG...$TAG
