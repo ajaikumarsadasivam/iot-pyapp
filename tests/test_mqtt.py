@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import patch
 import os
-os.getcwd() 
 from app import app, mqtt_client
 
 
