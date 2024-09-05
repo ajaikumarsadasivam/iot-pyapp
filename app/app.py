@@ -10,22 +10,20 @@ app.config.from_object('config.Config')
 if os.getenv('FLASK_ENV') == 'testing':
     app.config.from_object('config.TestConfig')
 
-
 mqtt_broker = os.getenv('MQTT_BROKER')
 mqtt_port = int(os.getenv('MQTT_PORT', 8883))
 mqtt_username = os.getenv('MQTT_USERNAME')
 mqtt_password = os.getenv('MQTT_PASSWORD')
 client_id = 'mqtt-test'
-
 mqtt_client = paho.Client(client_id=client_id, userdata=None, protocol=paho.MQTTv5)
-
 pico_data_topic = 'pico/sensors/data'
 pico_control_topic = 'pico/led/control'
-sensor_data = {'temperature': None, 'potentiometer': None, 'distance': None}
+sensor_data = {'temperature': None, 'humidity': None}
 
 
 def on_connect(client, userdata, flags, rc, properties):
     '''
+    MQTT connection definition
     '''
     print("Connected with result code " + str(rc))
     if rc == 0:
@@ -37,6 +35,7 @@ def on_connect(client, userdata, flags, rc, properties):
 
 def on_message(client, userdata, msg):
     '''
+    MQTT message definition
     '''
     global sensor_data
     payload = msg.payload.decode('utf-8')
@@ -47,12 +46,10 @@ def on_message(client, userdata, msg):
         print(f"Failed to decode JSON: {e}")
 
 
-mqtt_client.on_connect = on_connect
-mqtt_client.on_message = on_message
-mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-
-# Connect to MQTT broker
 def connect_mqtt():
+    '''
+    Connect to MQTT Broker
+    '''
     try:
         mqtt_client.username_pw_set(mqtt_username, mqtt_password)
         mqtt_client.connect(mqtt_broker, mqtt_port, 60)
@@ -60,6 +57,10 @@ def connect_mqtt():
     except Exception as e:
         print(f"Failed to connect to MQTT broker: {e}")
 
+
+mqtt_client.on_connect = on_connect
+mqtt_client.on_message = on_message
+mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 connect_mqtt()
 
 

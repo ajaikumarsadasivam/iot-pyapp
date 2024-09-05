@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pico W Control Panel</title>
+    <title>Pico/IoT Control Panel</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function fetchSensorData() {
@@ -12,8 +12,7 @@
                 type: 'GET',
                 success: function(data) {
                     $('#temperature').text(data.temperature + " °C");
-                    $('#potentiometer').text(data.potentiometer);
-                    $('#distance').text(data.distance + " cm");
+                    $('#humidity').text(data.humidity + " %");
                 }
             });
         }
@@ -24,11 +23,11 @@
     </script>
 </head>
 <body>
-    <h1>Pico W Sensor Data</h1>
+    <h1>Python Flask-MQTT IoT Application</h1>
+    <h2>Pico/IoT device - MQTT Sensor Data</h2>
     <p>Temperature: <span id="temperature">Loading...</span></p>
-    <p>Potentiometer: <span id="potentiometer">Loading...</span></p>
-    <p>Distance: <span id="distance">Loading...</span></p>
-    <h2>LED Control</h2>
+    <p>Humidity: <span id="humidity">Loading...</span></p>
+    <h2>Pico/IoT device - MQTT LED Control</h2>
     <form action="/control" method="POST">
         <label for="color">LED Color:</label>
         <select id="color" name="color">
