@@ -1,6 +1,5 @@
 import pytest
 from unittest.mock import patch
-import os
 from app import app, mqtt_client
 
 
@@ -20,14 +19,14 @@ class TestMQTT:
         # Assuming connect_mqtt() is called when app starts
         from app import connect_mqtt
         connect_mqtt()
-        
+
         mock_connect.assert_called_once()
         mock_loop_start.assert_called_once()
 
     @patch('app.mqtt_client.publish')
     def test_publish_message(self, mock_publish):
         mock_publish.return_value = None
-        
+
         with app.test_client() as client:
             response = client.post('/control', data={'color': 'red', 'state': '1'})
             mock_publish.assert_called_once()
@@ -36,8 +35,8 @@ class TestMQTT:
     @patch('app.mqtt_client.subscribe')
     def test_subscribe_to_topic(self, mock_subscribe):
         mock_subscribe.return_value = None
-        
+
         from app import on_connect
         on_connect(mqtt_client, None, None, 0, None)  # Simulate successful connection
-        
+
         mock_subscribe.assert_called_once_with('pico/sensors/data')

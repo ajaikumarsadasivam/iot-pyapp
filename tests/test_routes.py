@@ -1,6 +1,7 @@
 import pytest
 from app import app
 
+
 class TestRoutes:
     @pytest.fixture
     def client(self):
