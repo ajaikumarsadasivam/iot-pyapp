@@ -1,5 +1,7 @@
 import pytest
 from unittest.mock import patch
+import sys
+sys.path.append('../')
 from app import app, mqtt_client
 
 
