@@ -1,5 +1,7 @@
 import pytest
-from app import app
+import sys
+sys.path.append('../')
+import app
 
 
 class TestRoutes:
